@@ -10,9 +10,15 @@ import 'package:FOOD2GO/Utils/colors.dart';
 import 'package:FOOD2GO/Utils/common_widgets.dart';
 import 'package:FOOD2GO/Utils/images.dart';
 import 'package:FOOD2GO/Utils/text_font_family.dart';
+import '../LoginService.dart';
 
 class SignInScreen extends StatelessWidget {
+  final LoginService loginService = LoginService();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   SignInScreen({Key? key}) : super(key: key);
+
   final VisibilityController visibilityController =
       Get.put(VisibilityController());
 
@@ -33,9 +39,47 @@ class SignInScreen extends StatelessWidget {
             SizedBox(height: 40),
             mediumText("Login", ColorResources.black120, 24),
             SizedBox(height: 20),
-            textField("Your phone", Images.phone),
+            TextFormField(
+              controller: phoneController,
+              cursorColor: ColorResources.black120,
+              style: TextStyle(
+                color: ColorResources.black120,
+                fontSize: 14,
+                fontFamily: TextFontFamily.AIR_BNBCEREAL_BOOK,
+              ),
+              decoration: InputDecoration(
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: SvgPicture.asset(Images.phone),
+                ),
+                hintText: "Your phone",
+                hintStyle: TextStyle(
+                  color: ColorResources.grey747,
+                  fontSize: 14,
+                  fontFamily: TextFontFamily.AIR_BNBCEREAL_BOOK,
+                ),
+                filled: true,
+                fillColor: ColorResources.white,
+                border: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: ColorResources.greyE4D, width: 1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: ColorResources.greyE4D, width: 1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: ColorResources.greyE4D, width: 1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
             SizedBox(height: 20),
             TextFormField(
+              controller: passwordController,
               cursorColor: ColorResources.black120,
               style: TextStyle(
                 color: ColorResources.black120,
@@ -121,11 +165,12 @@ class SignInScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: containerButton(() {
+                String phone = phoneController.text;
+                String password = passwordController.text;
+                loginService.loginUser(phone, password);
                 Get.to(MapWidgetScreen());
-              }, "SIGN  IN",),
+              }, "SIGN  IN"),
             ),
-
-
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
